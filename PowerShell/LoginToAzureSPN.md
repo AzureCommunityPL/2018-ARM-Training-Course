@@ -1,8 +1,13 @@
-﻿$client_id = "application ID"
-$secret = "Application Key or provided password"
-$tenant = "Tenat ID"
+﻿# Initialize Application information
+    $client_id = "application ID"
+    $secret = "Application Key or provided password"
+    $tenant = "Tenat ID"
 
-$pass = ConvertTo-SecureString $secret -AsPlainText –Force
-$cred = New-Object -TypeName pscredential –ArgumentList $client_id, $pass
+# Create credentials object
 
-Login-AzureRmAccount -Credential $cred -ServicePrincipal -TenantId $tenant
+    $pass = ConvertTo-SecureString $secret -AsPlainText –Force
+    $cred = New-Object -TypeName pscredential –ArgumentList $client_id, $pass
+
+# Login to Azure with SPN
+
+    Login-AzureRmAccount -Credential $cred -ServicePrincipal -TenantId $tenant
