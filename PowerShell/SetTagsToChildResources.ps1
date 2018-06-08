@@ -9,6 +9,6 @@ foreach ($resource in $resources)
 {
     if ($resource.Tags -like $null)
     {
-        Set-AzureRmResource -ResourceId $resource.ResourceId -Tag $rg.Tags 
+        Set-AzureRmResource -ResourceId $resource.ResourceId -Tag $rg.Tags -Force
     }
 }
