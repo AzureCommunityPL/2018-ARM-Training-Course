@@ -1,4 +1,5 @@
-#Initialize
+# Initialize
+
     $ErrorActionPreference = "Stop"
     $VerbosePreference = "SilentlyContinue"
     $userName = $env:USERNAME
@@ -8,7 +9,8 @@
     $identifierUri = $homePage
 
 
-#Initialize subscription
+# Initialize subscription
+
     $isAzureModulePresent = Get-Module -Name AzureRM* -ListAvailable
     if ([String]::IsNullOrEmpty($isAzureModulePresent) -eq $true)
     {
