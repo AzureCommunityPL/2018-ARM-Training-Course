@@ -1,24 +1,25 @@
-﻿#region Get Providers
-Get-AzureRmResourceProvider -ListAvailable | Select-Object ProviderNamespace, RegistrationState 
-#endregion
+﻿# Get Providers
+    
+    Get-AzureRmResourceProvider -ListAvailable | Select-Object ProviderNamespace, RegistrationState 
 
-#region Get Providers Count
-Get-AzureRmResourceProvider -ListAvailable | Select-Object ProviderNamespace | measure
-#endregion
 
-#region Resource Types
-(Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes.ResourceTypeName
-#endregion
+# Get Providers Count
 
-#region API
-((Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes | Where-Object ResourceTypeName -eq virtualMachines).ApiVersions
-#endregion
+    Get-AzureRmResourceProvider -ListAvailable | Select-Object ProviderNamespace | measure
 
-#region Locations
-((Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes | Where-Object ResourceTypeName -eq virtualMachines).locations
-#endregion
+# Resource Types
 
-#region Operations
-Get-AzureRmProviderOperation | where Operation -match "Microsoft.Compute/virtualMachines/"
-Get-AzureRmProviderOperation | where Operation -match "Microsoft.Compute/virtualMachines/" | select Operation
-#endregion
+    (Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes.ResourceTypeName
+
+# API
+
+    ((Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes | Where-Object ResourceTypeName -eq virtualMachines).ApiVersions
+
+# Locations
+
+    ((Get-AzureRmResourceProvider -ProviderNamespace Microsoft.Compute).ResourceTypes | Where-Object ResourceTypeName -eq virtualMachines).locations
+
+# Operations
+
+    Get-AzureRmProviderOperation | where Operation -match "Microsoft.Compute/virtualMachines/"
+    Get-AzureRmProviderOperation | where Operation -match "Microsoft.Compute/virtualMachines/" | select Operation

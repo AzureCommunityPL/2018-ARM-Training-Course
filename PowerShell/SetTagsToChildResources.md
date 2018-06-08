@@ -1,14 +1,18 @@
-﻿$rg = Get-AzureRmResourceGroup -Name "name of resource gorup"
-$rg.Tags
-$rgname = $rg.ResourceGroupName
+﻿# Get resource group
 
-$resources = Get-AzureRmResource | where {$_.ResourceGroupName -like $rgname}
+    $rg = Get-AzureRmResourceGroup -Name "name of resource gorup"
+    $rg.Tags
+    $rgname = $rg.ResourceGroupName
 
+# Get resources within resource group
+    $resources = Get-AzureRmResource -ResourceGroupName $rgname
 
-foreach ($resource in $resources)
-{
-    if ($resource.Tags -like $null)
+# Set resource tags for each resource inside resource group
+    
+    foreach ($resource in $resources)
     {
-        Set-AzureRmResource -ResourceId $resource.ResourceId -Tag $rg.Tags -Force
+        if ($resource.Tags -like $null)
+        {
+            Set-AzureRmResource -ResourceId $resource.ResourceId -Tag $rg.Tags -Force
+        }
     }
-}
