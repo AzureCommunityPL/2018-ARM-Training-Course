@@ -1,67 +1,31 @@
 #Initialize
-$ErrorActionPreference = "Stop"
-$VerbosePreference = "SilentlyContinue"
-$userName = $env:USERNAME
-$newguid = [guid]::NewGuid()
-$displayName = [String]::Format("VSO.{0}.{1}", $userName, $newguid)
-$homePage = "http://" + $displayName
-$identifierUri = $homePage
+    $ErrorActionPreference = "Stop"
+    $VerbosePreference = "SilentlyContinue"
+    $userName = $env:USERNAME
+    $newguid = [guid]::NewGuid()
+    $displayName = [String]::Format("ARM.{0}.{1}", $userName, $newguid)
+    $homePage = "http://" + $displayName
+    $identifierUri = $homePage
 
 
 #Initialize subscription
-$isAzureModulePresent = Get-Module -Name AzureRM* -ListAvailable
-if ([String]::IsNullOrEmpty($isAzureModulePresent) -eq $true)
-{
-    Write-Output "Script requires AzureRM modules to be present. Obtain AzureRM from https://github.com/Azure/azure-powershell/releases. Please refer https://github.com/Microsoft/vsts-tasks/blob/master/Tasks/DeployAzureResourceGroup/README.md for recommended AzureRM versions." -Verbose
-    return
-}
-
-Import-Module -Name AzureRM.Profile
-
-function Login
-{
-    $needLogin = $true
-    Try 
+    $isAzureModulePresent = Get-Module -Name AzureRM* -ListAvailable
+    if ([String]::IsNullOrEmpty($isAzureModulePresent) -eq $true)
     {
-        $content = Get-AzureRmContext
-        if ($content) 
-        {
-            $needLogin = ([string]::IsNullOrEmpty($content.Account))
-        } 
-    } 
-    Catch 
-    {
-        if ($_ -like "*Login-AzureRmAccount to login*") 
-        {
-            $needLogin = $true
-        } 
-        else 
-        {
-            throw
-        }
+        Write-Output "Script requires AzureRM modules to be present. Obtain AzureRM from https://github.com/Azure/azure-powershell/releases. Please refer https://github.com/Microsoft/vsts-tasks/blob/master/Tasks/DeployAzureResourceGroup/README.md for recommended AzureRM versions." -Verbose
+        return
     }
 
-    if ($needLogin)
-    {
-        Write-Output "Provide your credentials to access Azure subscription $subscriptionName" -Verbose
-        Login-AzureRmAccount
-    }
-}
+    Import-Module -Name AzureRM.Profile
 
-#<#
-Write-Output "Collecting Azure subscriptions" -Verbose
-$subscriptionId = 
-    (Get-AzureRmSubscription |
-     Out-GridView `
-        -Title "Select an Azure Subscription ..." `
-        -PassThru).SubscriptionId
+    
 
-#>
-Select-AzureRmSubscription -SubscriptionId $subscriptionId
-$azureSubscription = Get-AzureRmSubscription -subscriptionId $subscriptionId
-$connectionName = $azureSubscription.Name
-$tenantId = $azureSubscription.TenantId
-$id = $azureSubscription.SubscriptionId
+#Get subscription
+    Select-AzureRmSubscription -SubscriptionId $subscriptionId
+    $azureSubscription = Get-AzureRmSubscription -subscriptionId $subscriptionId
+    $connectionName = $azureSubscription.Name
+    $tenantId = $azureSubscription.TenantId
+    $id = $azureSubscription.SubscriptionId
 
 #Set App Password
 [securestring]$password = Read-Host -AsSecureString -Prompt "Provide App Password"
