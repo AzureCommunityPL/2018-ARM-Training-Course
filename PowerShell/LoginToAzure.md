@@ -1,15 +1,15 @@
 ﻿# Authenticate to Azure
 
-    Login-AzureRmAccount
+    Login-AzAccount
 
 # Select an Azure Subscription for which to report usage data
 
     $subscriptionId = 
-        (Get-AzureRmSubscription |
+        (Get-AzSubscription |
          Out-GridView `
             -Title "Select an Azure Subscription ..." `
             -PassThru).SubscriptionId
 
 # Select Azure subscription context
 
-    Select-AzureRmSubscription -SubscriptionId $subscriptionId
+    Select-AzSubscription -SubscriptionId $subscriptionId
