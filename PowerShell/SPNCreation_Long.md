@@ -10,18 +10,18 @@
 
 # Import AzureARM module
 
-    $isAzureModulePresent = Get-Module -Name AzureRM* -ListAvailable
+    $isAzureModulePresent = Get-Module -Name Az* -ListAvailable
     if ([String]::IsNullOrEmpty($isAzureModulePresent) -eq $true)
     {
-        Write-Output "Script requires AzureRM modules to be present. Obtain AzureRM from https://github.com/Azure/azure-powershell/releases. Please refer https://github.com/Microsoft/vsts-tasks/blob/master/Tasks/DeployAzureResourceGroup/README.md for recommended AzureRM versions." -Verbose
+        Write-Output "Script requires Az modules to be present. Obtain Az from https://github.com/Azure/azure-powershell/releases. Please refer https://github.com/Microsoft/vsts-tasks/blob/master/Tasks/DeployAzureResourceGroup/README.md for recommended Az versions." -Verbose
         return
     }
 
-    Import-Module -Name AzureRM.Profile
+    Import-Module -Name Az.Profile
 
 # Get subscription
     
-    $azureSubscription = (Get-AzureRmContext | select Subscription).Subscription
+    $azureSubscription = (Get-AzContext | select Subscription).Subscription
     $connectionName = $azureSubscription.Name
     $tenantId = $azureSubscription.TenantId
     $id = $azureSubscription.Id
@@ -36,13 +36,13 @@
 
 # Create a new AD Application
     Write-Output "Creating a new Application in AAD (App URI - $identifierUri)" -Verbose
-    $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $homePage -IdentifierUris $identifierUri -Password $password -Verbose
+    $azureAdApplication = New-AzADApplication -DisplayName $displayName -HomePage $homePage -IdentifierUris $identifierUri -Password $password -Verbose
     $appId = $azureAdApplication.ApplicationId
     Write-Output "Azure AAD Application creation completed successfully (Application Id: $appId)" -Verbose
 
 # Create new SPN
     Write-Output "Creating a new SPN" -Verbose
-    $spn = New-AzureRmADServicePrincipal -ApplicationId $appId
+    $spn = New-AzADServicePrincipal -ApplicationId $appId
     $spnName = $spn.ServicePrincipalName
     Write-Output "SPN creation completed successfully (SPN Name: $spnName)" -Verbose
 
@@ -50,7 +50,7 @@
     Write-Output "Waiting for SPN creation to reflect in Directory before Role assignment"
     Start-Sleep 20
     Write-Output "Assigning role ($spnRole) to SPN App ($appId)" -Verbose
-    New-AzureRmRoleAssignment -RoleDefinitionName $spnRole -ServicePrincipalName $appId
+    New-AzRoleAssignment -RoleDefinitionName $spnRole -ServicePrincipalName $appId
     Write-Output "SPN role assignment completed successfully" -Verbose
 
 # Print the values

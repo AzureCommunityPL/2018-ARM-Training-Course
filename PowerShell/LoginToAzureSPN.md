@@ -10,4 +10,4 @@
 
 # Login to Azure with SPN
 
-    Login-AzureRmAccount -Credential $cred -ServicePrincipal -TenantId $tenant
+    Login-AzAccount -Credential $cred -ServicePrincipal -TenantId $tenant

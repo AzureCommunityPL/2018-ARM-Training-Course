@@ -10,7 +10,7 @@
 
 # Get subscription
     
-    $azureSubscription = (Get-AzureRmContext | select Subscription).Subscription
+    $azureSubscription = (Get-AzContext | select Subscription).Subscription
     $connectionName = $azureSubscription.Name
     $tenantId = $azureSubscription.TenantId
     $id = $azureSubscription.Id
@@ -21,12 +21,12 @@
 
 # Create a new AD Application
 
-    $azureAdApplication = New-AzureRmADApplication -DisplayName $displayName -HomePage $homePage -IdentifierUris $identifierUri -Password $password -Verbose
+    $azureAdApplication = New-AzADApplication -DisplayName $displayName -HomePage $homePage -IdentifierUris $identifierUri -Password $password -Verbose
     $appId = $azureAdApplication.ApplicationId
 
 # Create new SPN
 
-    $spn = New-AzureRmADServicePrincipal -ApplicationId $appId
+    $spn = New-AzADServicePrincipal -ApplicationId $appId
     $spnName = $spn.ServicePrincipalName
 
 
