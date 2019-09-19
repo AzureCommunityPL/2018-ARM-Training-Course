@@ -4,12 +4,8 @@
 
 # Select an Azure Subscription for which to report usage data
 
-    $subscriptionId = `
-        (Get-AzSubscription | `
-         Out-GridView `
-            -Title "Select an Azure Subscription ..." `
-            -PassThru).SubscriptionId
+    $subscriptionId = (Get-AzSubscription | Out-GridView -Title "Select an Azure Subscription ..." -PassThru).SubscriptionId
 
 # Select Azure subscription context
 
-    Select-AzSubscription -SubscriptionId $subscriptionId
+    Select-AzSubscription -Subscription $subscriptionId
